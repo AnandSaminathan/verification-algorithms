@@ -4,6 +4,8 @@
 
 #include "antlr4-runtime.h"
 
+#include "formula-tree/formula-tree.h"
+
 using namespace antlr4;
 
 void FormulaTree::constructTree() {
