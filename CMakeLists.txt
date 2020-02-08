@@ -10,7 +10,8 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/libs/formula-tree/include)
 
 file(GLOB SOURCE ${PROJECT_SOURCE_DIR}/src/*.cpp
-        ${PROJECT_SOURCE_DIR}/src/common/*.cpp;
+        ${PROJECT_SOURCE_DIR}/src/common/*.cpp
+        ${PROJECT_SOURCE_DIR}/src/k-induction/*.cpp
     )
 
 if(WITH_TEST)
