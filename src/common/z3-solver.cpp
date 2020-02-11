@@ -22,8 +22,10 @@ z3::expr addOrGetSymbol(Symbol s) {
 z3::expr construct(FormulaNode cur) {
   if(cur.isLeaf()) { 
     auto it = symbolTable.find(cur.getContent());
-    assert(it != symbolTable.end());
-    return addOrGetSymbol(it->second);
+    if(it != symbolTable.end()) return addOrGetSymbol(it->second);
+    else {
+      return ctx.int_val(std::stoi(cur.getContent()));
+    }
   }
 
   z3::expr ret(ctx);
