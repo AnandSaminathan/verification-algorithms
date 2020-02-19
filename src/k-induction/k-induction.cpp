@@ -92,7 +92,10 @@ bool kInduction::check(std::string property) {
     s.push();
       s.add(I && path && !Pk);
       res1 = s.check();
-      if(res1 == z3::sat) { return false;  }
+      if(res1 == z3::sat) { 
+        std::cout << s.get_model() << '\n';
+        return false;  
+      }
     s.pop();
 
     k = k + 1;

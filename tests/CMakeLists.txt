@@ -32,3 +32,11 @@ add_dependencies(test-producer-consumer formula-tree)
 target_link_libraries(test-producer-consumer ${PROJECT_SOURCE_DIR}/libs/z3/libz3.so)
 target_link_libraries(test-producer-consumer ${FORMULA_TREE_ROOT}/libantlr4-runtime.so)
 target_link_libraries(test-producer-consumer ${FORMULA_TREE_ROOT}/libformula-tree.so)
+
+add_executable(test-mutex test-mutex.cpp
+              ${SOURCE}
+              )
+add_dependencies(test-mutex formula-tree)
+target_link_libraries(test-mutex ${PROJECT_SOURCE_DIR}/libs/z3/libz3.so)
+target_link_libraries(test-mutex ${FORMULA_TREE_ROOT}/libantlr4-runtime.so)
+target_link_libraries(test-mutex ${FORMULA_TREE_ROOT}/libformula-tree.so)
