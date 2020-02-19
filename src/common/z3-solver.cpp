@@ -19,13 +19,27 @@ z3::expr addOrGetSymbol(Symbol s) {
   return symbol;
 }
 
+z3::expr getZ3Val(std::string type, std::string val) {
+  if(type == "bool") {
+    if(val == "true") { return ctx.bool_val(true); }
+    else if(val == "false") { return ctx.bool_val(false); }
+    else { assert(val == "true" || val == "false"); }
+  } 
+  else if(type == "int") { return ctx.int_val(val.c_str());  }
+  else if(type == "real") { return ctx.real_const(val.c_str()); }
+  else { assert(type == "bool" || type == "int" || type == "real"); }
+}
+
 z3::expr construct(FormulaNode cur) {
+
+  if(cur.isVal()) {
+    return getZ3Val(cur.getContentType(), cur.getContent());
+  }
+
   if(cur.isLeaf()) { 
     auto it = symbolTable.find(cur.getContent());
-    if(it != symbolTable.end()) return addOrGetSymbol(it->second);
-    else {
-      return ctx.int_val(std::stoi(cur.getContent()));
-    }
+    assert(it != symbolTable.end());
+    return addOrGetSymbol(it->second);
   }
 
   z3::expr ret(ctx);

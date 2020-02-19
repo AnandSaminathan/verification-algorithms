@@ -9,3 +9,4 @@ extern std::map<std::string, Symbol> symbolTable;
 
 extern z3::expr stringToZ3(std::string);
 extern z3::expr addOrGetSymbol(Symbol);
+extern z3::expr getZ3Val(std::string, std::string);
