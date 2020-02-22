@@ -12,13 +12,13 @@ int main() {
   symbols.push_back(c);
 
   std::string I = "(a && !b && !c)";
-  std::string T = "((tya == txc) && (tyb == txa) && (tyc == txb))";
-  std::string oneHigh = "((txa && !txb && !txc) || (!txa && txb && !txc) || (!txa && !txb && txc))";
-  std::string allLow = "(!txa && !txb && !txc)";
-  std::string allHigh = "(txa && txb && txc)";
-  std::string firstHigh = "(txa && !txb && !txc)";
-  std::string firstOrSecondHigh = "((txa && !txb && !txc) || (!txa && txb && !txc))";
-  std::string atleastOneHigh = "(txa || txb || txc)";
+  std::string T = "((next_a == c) && (next_b == a) && (next_c == b))";
+  std::string oneHigh = "((a && !b && !c) || (!a && b && !c) || (!a && !b && c))";
+  std::string allLow = "(!a && !b && !c)";
+  std::string allHigh = "(a && b && c)";
+  std::string firstHigh = "(a && !b && !c)";
+  std::string firstOrSecondHigh = "((a && !b && !c) || (!a && b && !c))";
+  std::string atleastOneHigh = "(a || b || c)";
 
   kInduction k(symbols, I, T);
   assert(k.check(oneHigh) == true);
