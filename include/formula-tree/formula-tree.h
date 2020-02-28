@@ -10,12 +10,12 @@ class FormulaNode {
       this->content = content;
       this->childrenCount = children.size();
       this->children = children;
-      this->var = false;
+      this->val = false;
     }
 
     inline bool isLeaf() { return (childrenCount == 0); }
-    inline bool isVar() { return isLeaf() && var; }
-    inline bool isVal() { return isLeaf() && var; }
+    inline bool isVar() { return isLeaf() && !val; }
+    inline bool isVal() { return isLeaf() && val; }
 
     inline std::string getContent() { return content; }
     inline std::string getContentType() { return contentType; }
@@ -24,10 +24,10 @@ class FormulaNode {
     inline FormulaNode getChild(int child) { assertChild(child); return (*children[child]); }
     
     inline void setType(std::string type) { contentType = type; }
-    inline void toggleIsVar() { var = true; }
+    inline void toggleIsVar() { val = true; }
 
   private:
-    bool var;
+    bool val;
     int childrenCount;
     std::string content;
     std::string contentType;

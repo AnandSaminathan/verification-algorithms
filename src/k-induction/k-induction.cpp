@@ -11,7 +11,7 @@ z3::expr notEqual(z3::expr_vector &op1, z3::expr_vector &op2) {
   return res;
 }
 
-void kInduction::declare(std::vector<Symbol> symbols) {
+void kInduction::declare() {
   for(auto symbol: symbols) {
     x.push_back(addOrGetSymbol(symbol));
     

@@ -18,7 +18,7 @@ class kInduction : Verifier {
 
       varsPerState = (int) symbols.size();
       this->symbols = symbols;
-      this->declare(symbols);
+      this->declare();
       this->I = stringToZ3(I);
       this->T = stringToZ3(T);
 
@@ -35,7 +35,7 @@ class kInduction : Verifier {
 
   private:
 
-    void declare(std::vector<Symbol> symbols);
+    void declare();
 
     inline z3::expr transitionAt(int k) { return (T.substitute(x, globalStates[k - 1])).substitute(next_x, globalStates[k]);  }
     inline z3::expr propertyAt(int k) { return (P.substitute(x, globalStates[k]));  }
