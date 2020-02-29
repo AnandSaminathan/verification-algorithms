@@ -1,10 +1,9 @@
 #include "common/z3-solver.hpp"
-#include "formula-tree/formula-tree.h"
 
 z3::context ctx;
 std::map<std::string, Symbol> symbolTable;
 
-z3::expr addOrGetSymbol(Symbol s) {
+z3::expr addOrGetSymbol(Symbol s, bool make) {
   type symbolType = s.getType();
   std::string symbolName = s.getName();
 
@@ -14,7 +13,7 @@ z3::expr addOrGetSymbol(Symbol s) {
   if(symbolType == int_const) { symbol = ctx.int_const(symbolName.c_str()); }
   if(symbolType == real_const) { symbol = ctx.real_const(symbolName.c_str()); }
 
-  symbolTable[symbolName] = s;
+  if(make == true) { symbolTable[symbolName] = s; }
 
   return symbol;
 }
@@ -30,6 +29,12 @@ z3::expr getZ3Val(std::string type, std::string val) {
   else { assert(type == "bool" || type == "int" || type == "real"); }
 }
 
+inline z3::expr getZ3Const(std::string name) {
+  auto it = symbolTable.find(name);
+  assert(it != symbolTable.end());
+  return addOrGetSymbol(it->second, false);
+}
+
 z3::expr construct(FormulaNode cur) {
 
   if(cur.isVal()) {
@@ -37,9 +42,7 @@ z3::expr construct(FormulaNode cur) {
   }
 
   if(cur.isLeaf()) { 
-    auto it = symbolTable.find(cur.getContent());
-    assert(it != symbolTable.end());
-    return addOrGetSymbol(it->second);
+    return getZ3Const(cur.getContent());
   }
 
   z3::expr ret(ctx);

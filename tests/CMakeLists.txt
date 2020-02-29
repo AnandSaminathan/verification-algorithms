@@ -35,3 +35,11 @@ add_executable(test-mutex test-mutex.cpp
 target_link_libraries(test-mutex ${PROJECT_SOURCE_DIR}/libs/z3/libz3.so)
 target_link_libraries(test-mutex ${PROJECT_SOURCE_DIR}/libs/formula-tree/libantlr4-runtime.so)
 target_link_libraries(test-mutex ${PROJECT_SOURCE_DIR}/libs/formula-tree/libformula-tree.so)
+
+
+add_executable(test-3bit-shift-register test-3bit-shift-register.cpp
+              ${SOURCE}
+              )
+target_link_libraries(test-3bit-shift-register ${PROJECT_SOURCE_DIR}/libs/z3/libz3.so)
+target_link_libraries(test-3bit-shift-register ${PROJECT_SOURCE_DIR}/libs/formula-tree/libantlr4-runtime.so)
+target_link_libraries(test-3bit-shift-register ${PROJECT_SOURCE_DIR}/libs/formula-tree/libformula-tree.so)

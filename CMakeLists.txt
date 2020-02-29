@@ -9,11 +9,13 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 file(GLOB SOURCE ${PROJECT_SOURCE_DIR}/src/*.cpp
         ${PROJECT_SOURCE_DIR}/src/common/*.cpp
         ${PROJECT_SOURCE_DIR}/src/k-induction/*.cpp
+	${PROJECT_SOURCE_DIR}/src/ltl-bmc/*.cpp
     )
 
 add_library(verification-algorithms SHARED
             ${PROJECT_SOURCE_DIR}/src/common/z3-solver.cpp
             ${PROJECT_SOURCE_DIR}/src/k-induction/k-induction.cpp
+	    ${PROJECT_SOURCE_DIR}/src/ltl-bmc/ltl-bmc.cpp
           )
 target_link_libraries(verification-algorithms ${PROJECT_SOURCE_DIR}/libs/formula-tree/libformula-tree.so)
 target_link_libraries(verification-algorithms ${PROJECT_SOURCE_DIR}/libs/formula-tree/libantlr4-runtime.so)

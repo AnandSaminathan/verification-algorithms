@@ -17,9 +17,10 @@ class ltlBmc : Verifier {
       trace(ctx) {
 
         varsPerState = (int) symbols.size();
+        this->symbols = symbols;
+        this->declare();
         this->I = stringToZ3(I);
         this->T = stringToZ3(T);
-        this->symbols = symbols;
         this->bound = 1000000;
     }
 
@@ -38,10 +39,22 @@ class ltlBmc : Verifier {
 
     void declare();
 
-    inline z3::expr transition(expr from, expr to) { return T.substitute(x, from).substitute(next_x, to); }
+    inline z3::expr transition(z3::expr_vector from, z3::expr_vector to) { return T.substitute(x, from).substitute(next_x, to); }
     inline void includeGlobalState(int k) { if(globalStates.size() == k) { globalStates.push_back(globalStateAt(k)); } }
+    inline z3::expr initialState() { return (I.substitute(x, globalStates[0])); }
+    inline z3::expr loopCondition(int k, int l) { return transition(globalStates[k], globalStates[l]); }
+    inline z3::expr loopCondition(int k) { 
+      z3::expr condition(ctx); 
+      for(int l = 0; l <= k; ++l) {
+        z3::expr cur = loopCondition(k, l);
+        if(l == 0) { condition = (cur); }
+        else { condition = condition || (cur); }
+      }
+      return (condition);
+    }
 
     z3::expr_vector globalStateAt(int);
+    z3::expr generalTranslation(z3::expr&, FormulaNode, int);
     z3::expr translationWithoutLoop(FormulaNode, int, int);
     z3::expr translationWithLoop(FormulaNode, int, int, int);
 
@@ -57,4 +70,4 @@ class ltlBmc : Verifier {
     int bound;
     bool result;
     std::vector<z3::expr_vector> globalStates;
-}
+};
