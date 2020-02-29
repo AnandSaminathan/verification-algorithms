@@ -1,5 +1,5 @@
 #include <iostream>
-#include "k-induction/k-induction.hpp"
+#include "ltl-bmc/ltl-bmc.hpp"
 
 int main() {
   std::vector<Symbol> symbols;
@@ -32,19 +32,25 @@ int main() {
     else T += " || " + clause;
   }
 
-  std::string mutex = "(!(p2 > 0 && p5 > 0))";
-  std::string badMutex = "(p2 > 0 && p5 > 0)";
-  std::string alwaysInCS = "(p2 > 0 || p5 > 0)";
-  std::string tokenUnused = "((p3 > 0) -> (p2 == 0 && p5 == 0))";
-  std::string tokenUsed = "((p3 == 0) -> (p2 == 1 || p5 == 1))";
-  std::string badTokenUsed = "((p3 == 0) -> (p2 == 1 && p5 == 1))";
+  std::string mutex = "G(!(p2 > 0 && p5 > 0))";
+  std::string badMutex = "G(p2 > 0 && p5 > 0)";
+  std::string alwaysInCS = "G(p2 > 0 || p5 > 0)";
+  std::string tokenUnused = "G((p3 > 0) -> (p2 == 0 && p5 == 0))";
+  std::string tokenUsed = "G((p3 == 0) -> (p2 == 1 || p5 == 1))";
+  std::string badTokenUsed = "G((p3 == 0) -> (p2 == 1 && p5 == 1))";
+  std::string eventuallyCS1 = "F(p2 > 0)";
+  std::string eventuallyCS2 = "F(p5 > 0)";
+  std::string eventuallyCS = "F(p2 > 0 || p5 > 0)";
 
-  kInduction k(symbols, I, T);
+  ltlBmc l(symbols, I, T); l.setBound(4);
 
-  assert(k.check(mutex) == true);
-  assert(k.check(badMutex) == false);
-  assert(k.check(alwaysInCS) == false);
-  assert(k.check(tokenUnused) == true);
-  assert(k.check(tokenUsed) == true);
-  assert(k.check(badTokenUsed) == false);
+  assert(l.check(mutex) == true);
+  assert(l.check(badMutex) == false);
+  assert(l.check(alwaysInCS) == false);
+  assert(l.check(tokenUnused) == true);
+  assert(l.check(tokenUsed) == true);
+  assert(l.check(badTokenUsed) == false);
+  assert(l.check(eventuallyCS1) == false);
+  assert(l.check(eventuallyCS2) == false);
+  assert(l.check(eventuallyCS) == true);
 }
