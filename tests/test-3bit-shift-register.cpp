@@ -1,5 +1,5 @@
 #include <iostream>
-#include "ltl-bmc/ltl-bmc.hpp"
+#include "verification-algorithms/ltl-bmc/ltl-bmc.hpp"
 
 int main() {
   std::vector<Symbol> symbols;

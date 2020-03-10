@@ -1,4 +1,4 @@
-#include "common/z3-solver.hpp"
+#include "verification-algorithms/common/z3-solver.hpp"
 
 z3::context ctx;
 std::map<std::string, Symbol> symbolTable;

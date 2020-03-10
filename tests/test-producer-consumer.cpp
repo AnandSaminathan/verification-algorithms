@@ -1,5 +1,5 @@
 #include <iostream>
-#include "k-induction/k-induction.hpp"
+#include "verification-algorithms/k-induction/k-induction.hpp"
 
 int main() {
   std::vector<Symbol> symbols;

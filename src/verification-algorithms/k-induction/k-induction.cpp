@@ -1,4 +1,4 @@
-#include "k-induction/k-induction.hpp"
+#include "verification-algorithms/k-induction/k-induction.hpp"
 
 z3::expr notEqual(z3::expr_vector &op1, z3::expr_vector &op2) {
   z3::expr res(ctx);

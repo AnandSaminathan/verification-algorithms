@@ -1,4 +1,4 @@
-#include "ltl-bmc/ltl-bmc.hpp"
+#include "verification-algorithms/ltl-bmc/ltl-bmc.hpp"
 
 
 void ltlBmc::declare() {

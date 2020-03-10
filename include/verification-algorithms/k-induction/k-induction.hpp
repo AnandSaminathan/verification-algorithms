@@ -2,9 +2,9 @@
 
 #include <vector>
 
-#include "common/verifier.hpp"
-#include "common/z3-solver.hpp"
-#include "common/symbol.hpp"
+#include "verification-algorithms/common/verifier.hpp"
+#include "verification-algorithms/common/z3-solver.hpp"
+#include "verification-algorithms/common/symbol.hpp"
 
 class kInduction : Verifier {
   public:

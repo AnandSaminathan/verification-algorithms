@@ -1,6 +1,6 @@
 #include <assert.h>
 #include <string>
-#include "common/symbol.hpp"
+#include "verification-algorithms/common/symbol.hpp"
 
 int main() {
   Symbol S(bool_const, "abcd");
