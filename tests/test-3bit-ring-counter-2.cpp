@@ -13,12 +13,12 @@ int main() {
 
   std::string I = "(a && !b && !c)";
   std::string T = "((next_a == c) && (next_b == a) && (next_c == b))";
-  std::string oneHigh = "G((a && !b && !c) || (!a && b && !c) || (!a && !b && c))";
-  std::string allLow = "G(!a && !b && !c)";
-  std::string allHigh = "G(a && b && c)";
-  std::string firstHigh = "G(a && !b && !c)";
-  std::string firstOrSecondHigh = "G((a && !b && !c) || (!a && b && !c))";
-  std::string atleastOneHigh = "G(a || b || c)";
+  std::string oneHigh = "G((a == true && b == false && c == false) || (a == false && b == true && c == false) || (a == false && b == false && c == true))";
+  std::string allLow = "G(a == false && b == false && c == false)";
+  std::string allHigh = "G(a == true && b == true && c == true)";
+  std::string firstHigh = "G(a == true && b == false && c == false)";
+  std::string firstOrSecondHigh = "G((a == true && b == false && c == false) || (a == false && b == true && c == false))";
+  std::string atleastOneHigh = "G(a == true || b == true || c == true)";
 
   ltlBmc k(symbols, I, T); k.setBound(3);
   assert(k.check(oneHigh) == true);
