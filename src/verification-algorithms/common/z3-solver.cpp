@@ -54,7 +54,7 @@ z3::expr construct(FormulaNode cur) {
   if(content == "-") { ret = construct(cur.getChild(0)) - construct(cur.getChild(1));  }
   if(content == "*") { ret = construct(cur.getChild(0)) * construct(cur.getChild(1));  }
   if(content == "/") { ret = construct(cur.getChild(0)) / construct(cur.getChild(1));  }
-  if(content == "%") { ret = z3::mod(construct(cur.getChild(0)), construct(cur.getChild(1)));  }
+  if(content == "%") { ret = z3::rem(construct(cur.getChild(0)), construct(cur.getChild(1)));  }
 
   if(content == "!") { ret = !construct(cur.getChild(0));  }
   if(content == "&&") { ret = construct(cur.getChild(0)) && construct(cur.getChild(1));  }
