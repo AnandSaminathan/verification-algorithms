@@ -57,3 +57,10 @@ add_executable(test-3bit-ring-counter-2 test-3bit-ring-counter-2.cpp
 target_link_libraries(test-3bit-ring-counter-2 ${PROJECT_SOURCE_DIR}/libs/z3/libz3.so)
 target_link_libraries(test-3bit-ring-counter-2 ${PROJECT_SOURCE_DIR}/libs/formula-tree/libantlr4-runtime.so)
 target_link_libraries(test-3bit-ring-counter-2 ${PROJECT_SOURCE_DIR}/libs/formula-tree/libformula-tree.so)
+
+add_executable(test-1000bit-ring-counter test-1000bit-ring-counter.cpp
+              ${SOURCE}
+              )
+target_link_libraries(test-1000bit-ring-counter ${PROJECT_SOURCE_DIR}/libs/z3/libz3.so)
+target_link_libraries(test-1000bit-ring-counter ${PROJECT_SOURCE_DIR}/libs/formula-tree/libantlr4-runtime.so)
+target_link_libraries(test-1000bit-ring-counter ${PROJECT_SOURCE_DIR}/libs/formula-tree/libformula-tree.so)
