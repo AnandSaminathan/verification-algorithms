@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include <assert.h>
 
 class FormulaNode {
@@ -26,6 +27,7 @@ class FormulaNode {
 
     inline int getChildrenCount() { return childrenCount; }
     inline FormulaNode getChild(int child) { assertChild(child); return (*children[child]); }
+    inline FormulaNode* getPointerToChild(int child) { assertChild(child); return (children[child]); }
     
     inline void setType(std::string type) { contentType = type; }
     inline void setContent(std::string content) { this->content = content; }
@@ -51,9 +53,11 @@ class FormulaTree {
 
     inline void makeNNF() { constructNNF(); }
 
-    inline std::string getFormula() { return formula; }
+    inline std::string getFormula() { return toString((*root)); }
     inline FormulaNode getRoot() { return (*root); }
+    inline FormulaNode* getPointerToRoot() { return (root); }
     inline FormulaNode getNNFRoot() { return (*nnfRoot); }
+    void substitute(std::map<std::string, std::string>&);
 
   private:
     FormulaNode *root;
@@ -61,6 +65,7 @@ class FormulaTree {
     std::string formula;
     void constructTree();
     void constructNNF();
+    std::string toString(FormulaNode);
 };
 
 
