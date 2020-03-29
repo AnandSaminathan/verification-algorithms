@@ -1,5 +1,5 @@
-#ifndef formula_tree
-#define formula_tree
+#pragma once
+#pragma GCC optimize("unroll-loops")
 
 #include <string>
 #include <map>
@@ -9,7 +9,7 @@
 
 class FormulaNode {
   public:
-    FormulaNode(std::string& content, std::shared_ptr<std::shared_ptr<FormulaNode>[]>& children, int childrenCount)
+    FormulaNode(std::string content, std::shared_ptr<std::shared_ptr<FormulaNode>[]>& children, int childrenCount)
     : content(content),
       children(children),
       childrenCount(childrenCount) { }
@@ -31,7 +31,7 @@ class FormulaNode {
     
     inline void setType(std::string type) { contentType = type; }
     inline void setContent(std::string content) { this->content = content; }
-    inline void toggleIsVar() { val = true; }
+    inline void toggleVal() { val = true; }
 
   private:
     bool val{false};
@@ -67,6 +67,4 @@ class FormulaTree {
     void constructNNF();
     std::string toString(FormulaNode);
 };
-
-#endif
 

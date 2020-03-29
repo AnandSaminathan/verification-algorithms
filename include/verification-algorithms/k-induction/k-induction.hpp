@@ -3,10 +3,9 @@
 #include <vector>
 
 #include "verification-algorithms/common/verifier.hpp"
-#include "verification-algorithms/common/z3-solver.hpp"
 #include "verification-algorithms/common/symbol.hpp"
 
-class kInduction : Verifier {
+class kInduction : public Verifier {
   public:
 
     kInduction(std::vector<Symbol> symbols, std::string I, std::string T) : I(ctx), 
@@ -24,14 +23,14 @@ class kInduction : Verifier {
 
     }
     
-    virtual bool check(std::string) override;
+    bool check(std::string) override;
     
     inline z3::expr getI() { return I; }
     inline z3::expr getT() { return T; }
     inline z3::expr getP() { return P; }
 
-    inline int  getLength() { return stoppedAt; }
-    inline z3::model getTrace() { assert(result == false); return trace; }
+    inline int  getLength() override { return stoppedAt; }
+    inline z3::model getTrace() override { assert(result == false); return trace; }
 
   private:
 
