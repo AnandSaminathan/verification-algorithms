@@ -35,6 +35,24 @@ inline z3::expr getZ3Const(std::string name) {
   return addOrGetSymbol(it->second, false);
 }
 
+z3::expr pble(z3::expr_vector& forms, std::vector<int>& coeff, int rhs) {
+  int* cc = new int[coeff.size()];
+  for(int i = 0; i < coeff.size(); ++i) { cc[i] = coeff[i];  }
+  return z3::pble(forms, cc, rhs);
+}
+
+z3::expr pbge(z3::expr_vector& forms, std::vector<int>& coeff, int rhs) {
+  int* cc = new int[coeff.size()];
+  for(int i = 0; i < coeff.size(); ++i) { cc[i] = coeff[i];  }
+  return z3::pbge(forms, cc, rhs);
+}
+
+z3::expr pbeq(z3::expr_vector& forms, std::vector<int>& coeff, int rhs) {
+  int* cc = new int[coeff.size()];
+  for(int i = 0; i < coeff.size(); ++i) { cc[i] = coeff[i];  }
+  return z3::pbeq(forms, cc, rhs);
+}
+
 z3::expr construct(FormulaNode cur) {
 
   if(cur.isVal()) {
@@ -76,7 +94,39 @@ z3::expr construct(FormulaNode cur) {
   return ret;
 }
 
+z3::expr constructPb(FormulaNode cur, z3::expr_vector& forms, std::vector<int>& coeff, bool neg = false) {
+  std::string content = cur.getContent();
+  if(content == "*") {
+    forms.push_back(construct(cur.getChild(1)));
+    int c = std::stoi((cur.getChild(0)).getContent());
+    if(neg) { coeff.emplace_back(-1 * c); }
+    else { coeff.emplace_back(c); }
+  }
+
+  FormulaNode child0 = cur.getChild(0);
+  std::string childContent = child0.getContent();
+  if(childContent == "+" || childContent == "-" || childContent == "*") { constructPb(child0, forms, coeff); }
+  else { coeff.emplace_back(1); forms.push_back(construct(child0));  }
+
+  if(content == "<=") { return pble(forms, coeff, std::stoi(cur.getChild(1).getContent())); }
+  if(content == ">=") { return pbge(forms, coeff, std::stoi(cur.getChild(1).getContent())); }
+  if(content == "==") { return pbeq(forms, coeff, std::stoi(cur.getChild(1).getContent())); }
+
+  FormulaNode child1 = cur.getChild(1);
+  if(child1.getContent() == "*") { constructPb(child1, forms, coeff, (content == "-")); }
+  else if(content == "+") { coeff.emplace_back(1); forms.push_back(construct(child1)); } 
+  else if(content == "-") { coeff.emplace_back(-1); forms.push_back(construct(child1)); }
+  return getZ3Val("bool", "true");
+}
+
 z3::expr stringToZ3(std::string stringExpr) {
   FormulaTree tree(stringExpr);
-  return construct(tree.getRoot());
+  FormulaNode root = tree.getRoot();
+  if(root.getSubTreeType() == pb) {
+    z3::expr_vector vec(ctx);
+    std::vector<int> coeff;
+    return constructPb(root, vec, coeff);
+  } else {
+    return construct(root);
+  }
 }

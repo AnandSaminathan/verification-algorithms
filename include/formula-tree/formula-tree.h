@@ -7,8 +7,11 @@
 #include <algorithm>
 #include <assert.h>
 
+#include "formula-tree/formula-type.hpp"
+
 class FormulaNode {
   public:
+
     FormulaNode(std::string content, std::shared_ptr<std::shared_ptr<FormulaNode>[]>& children, int childrenCount)
     : content(content),
       children(children),
@@ -24,16 +27,20 @@ class FormulaNode {
 
     inline std::string getContent() { return content; }
     inline std::string getContentType() { return contentType; }
+    inline formulaType getSubTreeType() { return subTreeType;  }
 
     inline int getChildrenCount() { return childrenCount; }
     inline FormulaNode getChild(int child) { assertChild(child); return (*children[child]); }
     inline std::shared_ptr<FormulaNode> getPointerToChild(int child) { assertChild(child); return (children[child]); }
     
     inline void setType(std::string type) { contentType = type; }
+    inline void setSubTreeType(formulaType type) { subTreeType = type;  }
     inline void setContent(std::string content) { this->content = content; }
     inline void toggleVal() { val = true; }
 
   private:
+    
+    formulaType subTreeType;
     bool val{false};
     int childrenCount;
     std::string content;
@@ -46,6 +53,7 @@ class FormulaNode {
 
 class FormulaTree {
   public:
+
     FormulaTree(std::string formula)
     : formula(formula) {
       this->constructTree();
@@ -60,6 +68,7 @@ class FormulaTree {
     void substitute(std::map<std::string, std::string>&);
 
   private:
+  
     std::shared_ptr<FormulaNode> root;
     std::shared_ptr<FormulaNode> nnfRoot;
     std::string formula;
