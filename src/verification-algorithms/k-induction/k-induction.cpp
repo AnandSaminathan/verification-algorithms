@@ -77,7 +77,7 @@ bool kInduction::check(std::string property) {
   }
 
   k = k + 1;
-  while(true) {
+  while(k <= bound) {
     includeGlobalState(k);
     updateAt(k, path, loopFree);
 
