@@ -4,6 +4,7 @@
 
 #include "verification-algorithms/common/verifier.hpp"
 #include "verification-algorithms/common/symbol.hpp"
+#include "verification-algorithms/common/cnf.hpp"
 
 class IC3 : public Verifier {
   public:
@@ -28,11 +29,14 @@ class IC3 : public Verifier {
     inline z3::model getTrace() override { assert(result == false); return trace;  }
 
   private:
-    
+
+    void declare();
+    CNF getCube(z3::model&);
+
     CNF I;
     z3::expr T; 
     z3::expr P;
-    z3::expr_vector x
+    z3::expr_vector x;
     z3::expr_vector next_x;
 
     z3::model trace;
@@ -40,6 +44,7 @@ class IC3 : public Verifier {
     int stoppedAt;
     bool result;
     std::vector<Symbol> symbols;
+    std::vector<CNF> frames;
 };
 
 
