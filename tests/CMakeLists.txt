@@ -29,6 +29,13 @@ target_link_libraries(test-3bit-ring-counter ${PROJECT_SOURCE_DIR}/libs/z3/libz3
 target_link_libraries(test-3bit-ring-counter ${PROJECT_SOURCE_DIR}/libs/formula-tree/libantlr4-runtime.so)
 target_link_libraries(test-3bit-ring-counter ${PROJECT_SOURCE_DIR}/libs/formula-tree/libformula-tree.so)
 
+add_executable(test-3bit-ring-counter-ic3 test-3bit-ring-counter-ic3.cpp
+              ${SOURCE}
+              )
+target_link_libraries(test-3bit-ring-counter-ic3 ${PROJECT_SOURCE_DIR}/libs/z3/libz3.so)
+target_link_libraries(test-3bit-ring-counter-ic3 ${PROJECT_SOURCE_DIR}/libs/formula-tree/libantlr4-runtime.so)
+target_link_libraries(test-3bit-ring-counter-ic3 ${PROJECT_SOURCE_DIR}/libs/formula-tree/libformula-tree.so)
+
 add_executable(test-producer-consumer test-producer-consumer.cpp
               ${SOURCE}
               )
@@ -42,6 +49,13 @@ add_executable(test-producer-consumer-pb test-producer-consumer-pb.cpp
 target_link_libraries(test-producer-consumer-pb ${PROJECT_SOURCE_DIR}/libs/z3/libz3.so)
 target_link_libraries(test-producer-consumer-pb ${PROJECT_SOURCE_DIR}/libs/formula-tree/libantlr4-runtime.so)
 target_link_libraries(test-producer-consumer-pb ${PROJECT_SOURCE_DIR}/libs/formula-tree/libformula-tree.so)
+
+add_executable(test-producer-consumer-ic3 test-producer-consumer-ic3.cpp
+              ${SOURCE}
+              )
+target_link_libraries(test-producer-consumer-ic3 ${PROJECT_SOURCE_DIR}/libs/z3/libz3.so)
+target_link_libraries(test-producer-consumer-ic3 ${PROJECT_SOURCE_DIR}/libs/formula-tree/libantlr4-runtime.so)
+target_link_libraries(test-producer-consumer-ic3 ${PROJECT_SOURCE_DIR}/libs/formula-tree/libformula-tree.so)
 
 add_executable(test-mutex test-mutex.cpp
               ${SOURCE}
@@ -57,6 +71,12 @@ target_link_libraries(test-mutex-pb ${PROJECT_SOURCE_DIR}/libs/z3/libz3.so)
 target_link_libraries(test-mutex-pb ${PROJECT_SOURCE_DIR}/libs/formula-tree/libantlr4-runtime.so)
 target_link_libraries(test-mutex-pb ${PROJECT_SOURCE_DIR}/libs/formula-tree/libformula-tree.so)
 
+add_executable(test-mutex-ic3 test-mutex-ic3.cpp
+              ${SOURCE}
+              )
+target_link_libraries(test-mutex-ic3 ${PROJECT_SOURCE_DIR}/libs/z3/libz3.so)
+target_link_libraries(test-mutex-ic3 ${PROJECT_SOURCE_DIR}/libs/formula-tree/libantlr4-runtime.so)
+target_link_libraries(test-mutex-ic3 ${PROJECT_SOURCE_DIR}/libs/formula-tree/libformula-tree.so)
 
 add_executable(test-3bit-shift-register test-3bit-shift-register.cpp
               ${SOURCE}

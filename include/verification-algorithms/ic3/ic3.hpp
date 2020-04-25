@@ -13,7 +13,8 @@ class IC3 : public Verifier {
       P(ctx),
       x(ctx),
       next_x(ctx),
-      trace(ctx) {
+      trace(ctx),
+      symbols(symbols) {
       this->declare();
       this->I = CNF(I);
       this->T = stringToZ3(T);

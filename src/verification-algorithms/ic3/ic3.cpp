@@ -15,12 +15,14 @@ void IC3::declare() {
   }
 }
 
-CNF getCube(z3::model& assign) {
+CNF getCube(const z3::expr_vector& x, const z3::model& assign) {
   CNF cube;
-  for(int i = 0; i < assign.size(); ++i) {
-    z3::func_decl f = assign[i];
-    z3::expr interp = assign.get_const_interp(f);
-    cube.addClause(f() == interp);
+  for(int i = 0; i < x.size(); ++i) {
+    z3::func_decl f = (x[i]).decl();
+    if(assign.has_interp(f)) {
+      z3::expr interp = assign.get_const_interp(f);
+      cube.addClause(f() == interp);
+    } 
   }
   return cube;
 }
@@ -36,33 +38,42 @@ z3::expr negateCube(CNF cube) {
 }
 
 bool IC3::check(std::string property) {
+  frames.clear();
   P = stringToZ3(property);
 
-  int n = 0;
   z3::solver s(ctx);
   z3::check_result res1;
+  std::vector<std::vector<bool>> moved;
 
   frames.emplace_back(CNF());
+  moved.emplace_back(std::vector<bool>(I.getClauseCount(), false));
   frames[0] = I;
 
   while(true) {
     s.push();
-      s.add(frames[n]() && !P);
+      s.add((frames.back())() && !P);
       res1 = s.check();
     s.pop();
     if(res1 == z3::unsat) {
       frames.emplace_back(CNF());
-      for(int j = 0; j <= n; ++j) {
+      moved.emplace_back(std::vector<bool>(1, true));
+      
+      for(int j = 0; j < frames.size() - 1; ++j) {
         auto clauses = frames[j].getClauses();
-        for(auto clause : clauses) {
-          s.push();
-            z3::expr clausep = clause.substitute(x, next_x);
-            s.add(frames[j]() && T && !clausep);
-            res1 = s.check();
-          s.pop();
-          if(res1 == z3::unsat) {
-            frames[j + 1].addClause(clause);
-          }
+        for(int c = 0; c < clauses.size(); ++c) {
+          z3::expr clause = clauses[c];
+          if(moved[j][c] == false) {
+            s.push();
+              z3::expr clausep = clause.substitute(x, next_x);
+              s.add(frames[j]() && T && !clausep);
+              res1 = s.check();
+            s.pop();
+            if(res1 == z3::unsat) {
+              moved[j][c] = true;
+              frames[j + 1].addClause(clause);
+              moved[j + 1].emplace_back(false);
+            }
+          } 
         } 
         s.push();
           s.add(!(frames[j]() == frames[j + 1]()));
@@ -70,36 +81,37 @@ bool IC3::check(std::string property) {
         s.pop();
         if(res1 == z3::unsat) {
           result = true;
-          stoppedAt = n;
+          stoppedAt = frames.size() - 1;
           return true;
         }
       }
-      n = n + 1;
-    } else {
+    } else { 
       z3::model assign = s.get_model();
-      CNF cube = getCube(assign);
-      int j = n - 1;
+      CNF cube = getCube(x, assign);
+      int j = frames.size() - 2;
       while(j >= 0) {
         s.push();
           z3::expr cubep = (cube()).substitute(x, next_x);
           s.add(frames[j]() && T && cubep);
           res1 = s.check();
         s.pop();
-        if(res1 == z3::unsat) {
-          frames[j].addClause(negateCube(cube));
-          break;
-        } else {
+        if(res1 == z3::sat) {
           assign = s.get_model();
-          cube = getCube(assign);
+          cube = getCube(x, assign);
           j = j - 1;
+        } else {
+          z3::expr negCube = negateCube(cube);
+          frames[j + 1].addClause(negCube);
+          moved[j + 1].emplace_back(false);
+          break;
         }
       }
-      if(j == -1) {
+      if(j == -1 || frames.size() == 1) {
         result = false;
-        stoppedAt = n;
+        stoppedAt = frames.size();
         return false;
       }
-    }
+    }  
   }
 }
 
