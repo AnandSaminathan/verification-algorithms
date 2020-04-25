@@ -15,7 +15,7 @@ void IC3::declare() {
   }
 }
 
-CNF IC3::getCube(z3::model& assign) {
+CNF getCube(z3::model& assign) {
   CNF cube;
   for(int i = 0; i < assign.size(); ++i) {
     z3::func_decl f = assign[i];

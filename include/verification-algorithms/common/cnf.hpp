@@ -10,7 +10,8 @@ class CNF {
     }
     
     CNF(std::string formula) : formula(ctx) {
-      formula = ctx.bool_val(true);
+      FormulaTree tree(formula);
+      constructCNF(tree.getRoot());
     }
 
     inline z3::expr operator()() { return formula; }
@@ -22,6 +23,8 @@ class CNF {
 
 
   private:
+
+    void constructCNF(FormulaNode);
 
     std::vector<z3::expr> clauses;
     z3::expr formula;

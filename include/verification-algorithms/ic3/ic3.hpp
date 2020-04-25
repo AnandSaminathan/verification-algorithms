@@ -31,7 +31,6 @@ class IC3 : public Verifier {
   private:
 
     void declare();
-    CNF getCube(z3::model&);
 
     CNF I;
     z3::expr T; 
