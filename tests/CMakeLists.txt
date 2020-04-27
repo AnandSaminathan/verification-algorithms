@@ -113,3 +113,12 @@ add_executable(test-trace test-trace.cpp
 target_link_libraries(test-trace ${PROJECT_SOURCE_DIR}/libs/z3/libz3.so)
 target_link_libraries(test-trace ${PROJECT_SOURCE_DIR}/libs/formula-tree/libantlr4-runtime.so)
 target_link_libraries(test-trace ${PROJECT_SOURCE_DIR}/libs/formula-tree/libformula-tree.so)
+
+add_executable(test-100bit-ring-counter-ic3 test-100bit-ring-counter-ic3.cpp
+              ${SOURCE}
+              )
+target_link_libraries(test-100bit-ring-counter-ic3 ${PROJECT_SOURCE_DIR}/libs/z3/libz3.so)
+target_link_libraries(test-100bit-ring-counter-ic3 ${PROJECT_SOURCE_DIR}/libs/formula-tree/libantlr4-runtime.so)
+target_link_libraries(test-100bit-ring-counter-ic3 ${PROJECT_SOURCE_DIR}/libs/formula-tree/libformula-tree.so)
+
+
