@@ -52,8 +52,20 @@ void kInduction::updateAt(int k, z3::expr& path, z3::expr& loopFree) {
   }
 }
 
+void kInduction::generateTrace(z3::model& assign) {
+  for(int i = 0; i <= stoppedAt; ++i) {
+    std::vector<std::string> state;
+    for(int j = 0; j < varsPerState; ++j) {
+      z3::expr res = assign.eval(globalStates[i][j]);
+      state.emplace_back(res.to_string());
+    }
+    trace.addState(state);
+  }
+}
+
 bool kInduction::check(std::string property) {
   P = stringToZ3(property);
+  trace = Trace();
  
   int k = 0;
   z3::solver s(ctx);
@@ -72,7 +84,8 @@ bool kInduction::check(std::string property) {
   if(res1 == z3::sat) { 
     stoppedAt = 0;
     result = false;
-    trace = s.get_model();
+    z3::model assign = s.get_model();
+    generateTrace(assign);
     return false; 
   }
 
@@ -102,8 +115,9 @@ bool kInduction::check(std::string property) {
     s.pop();
     if(res1 == z3::sat) {
       stoppedAt = k;
-      trace = s.get_model();
       result = false;
+      z3::model assign = s.get_model();
+      generateTrace(assign);
       return false;  
     }
 

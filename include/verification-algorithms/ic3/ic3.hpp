@@ -13,7 +13,6 @@ class IC3 : public Verifier {
       P(ctx),
       x(ctx),
       next_x(ctx),
-      trace(ctx),
       symbols(symbols) {
       this->declare();
       this->I = CNF(I);
@@ -27,11 +26,12 @@ class IC3 : public Verifier {
     inline z3::expr getP() { return P; }
 
     inline int getLength() override { return stoppedAt; }
-    inline z3::model getTrace() override { assert(result == false); return trace;  }
+    inline Trace getTrace() override { assert(result == false); return trace;  }
 
   private:
 
     void declare();
+    void generateTrace(z3::model&);
 
     CNF I;
     z3::expr T; 
@@ -39,7 +39,7 @@ class IC3 : public Verifier {
     z3::expr_vector x;
     z3::expr_vector next_x;
 
-    z3::model trace;
+    Trace trace;
 
     int stoppedAt;
     bool result;

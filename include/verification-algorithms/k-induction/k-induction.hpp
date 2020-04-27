@@ -12,8 +12,7 @@ class kInduction : public Verifier {
         T(ctx),
         P(ctx),
         x(ctx),
-        next_x(ctx),
-        trace(ctx) {
+        next_x(ctx) {
 
       varsPerState = (int) symbols.size();
       this->symbols = symbols;
@@ -30,7 +29,7 @@ class kInduction : public Verifier {
     inline z3::expr getP() { return P; }
 
     inline int  getLength() override { return stoppedAt; }
-    inline z3::model getTrace() override { assert(result == false); return trace; }
+    inline Trace getTrace() override { assert(result == false); return trace; }
 
     inline void setBound(int bound) { this->bound = bound;  }
     inline int getBound() { return bound; }
@@ -46,12 +45,13 @@ class kInduction : public Verifier {
     
     z3::expr_vector globalStateAt(int);
     void updateAt(int, z3::expr&, z3::expr&);
+    void generateTrace(z3::model&);
 
     z3::expr I, T;
     z3::expr P;
     z3::expr_vector x, next_x;
 
-    z3::model trace;
+    Trace trace;
 
     int stoppedAt;
     int varsPerState;

@@ -37,6 +37,15 @@ z3::expr negateCube(CNF cube) {
   return form;
 }
 
+void IC3::generateTrace(z3::model& assign) {
+  std::vector<std::string> state;
+  for(int i = 0; i < x.size(); ++i) {
+    z3::expr res = assign.eval(x[i]);
+    state.emplace_back(res.to_string());
+  }
+  trace.addState(state);
+}
+
 bool IC3::check(std::string property) {
   frames.clear();
   P = stringToZ3(property);
@@ -89,6 +98,8 @@ bool IC3::check(std::string property) {
       z3::model assign = s.get_model();
       CNF cube = getCube(x, assign);
       int j = frames.size() - 2;
+      trace = Trace();
+      generateTrace(assign);
       while(j >= 0) {
         s.push();
           z3::expr cubep = (cube()).substitute(x, next_x);
@@ -97,6 +108,7 @@ bool IC3::check(std::string property) {
         s.pop();
         if(res1 == z3::sat) {
           assign = s.get_model();
+          generateTrace(assign);
           cube = getCube(x, assign);
           j = j - 1;
         } else {
@@ -109,6 +121,7 @@ bool IC3::check(std::string property) {
       if(j == -1 || frames.size() == 1) {
         result = false;
         stoppedAt = frames.size();
+        trace.reverseTrace();
         return false;
       }
     }  

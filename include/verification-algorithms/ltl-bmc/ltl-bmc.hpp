@@ -12,8 +12,7 @@ class ltlBmc : public Verifier {
     ltlBmc(std::vector<Symbol> symbols, std::string I, std::string T) : I(ctx),
       T(ctx),
       x(ctx),
-      next_x(ctx),
-      trace(ctx) {
+      next_x(ctx) {
 
         varsPerState = (int) symbols.size();
         this->symbols = symbols;
@@ -29,7 +28,7 @@ class ltlBmc : public Verifier {
     inline z3::expr getT() { return T; }
 
     inline int  getLength() override { return stoppedAt; }
-    inline z3::model getTrace() override { assert(result == false); return trace; }
+    inline Trace getTrace() override { assert(result == false); return trace; }
 
     inline void setBound(int bound) { this->bound = bound;  }
     inline int getBound() { return bound; }
@@ -57,10 +56,12 @@ class ltlBmc : public Verifier {
     z3::expr translationWithoutLoop(FormulaNode, int, int);
     z3::expr translationWithLoop(FormulaNode, int, int, int);
 
+    void generateTrace(z3::model&);
+
     z3::expr I, T;
     z3::expr_vector x, next_x;
 
-    z3::model trace;
+    Trace trace;
 
     std::vector<Symbol> symbols;
 

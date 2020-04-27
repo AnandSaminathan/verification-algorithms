@@ -195,7 +195,20 @@ z3::expr ltlBmc::generalTranslation(z3::expr& withoutLoop, FormulaNode propertyR
   return withoutLoop && (withLoop);
 }
 
+
+void ltlBmc::generateTrace(z3::model& assign) {
+  for(int i = 0; i <= stoppedAt; ++i) {
+    std::vector<std::string> state;
+    for(int j = 0; j < varsPerState; ++j) {
+      z3::expr res = assign.eval(globalStates[i][j]);
+      state.emplace_back(res.to_string());
+    }
+    trace.addState(state);
+  }
+}
+
 bool ltlBmc::check(std::string property) {
+  trace = Trace();
   FormulaTree propertyTree("!(" + property + ")");
   propertyTree.makeNNF();
   FormulaNode propertyRoot = propertyTree.getNNFRoot();
@@ -209,9 +222,10 @@ bool ltlBmc::check(std::string property) {
     s.push();
       s.add(currentTranslation);
       if(s.check() == z3::sat) {
-        trace = s.get_model();
         stoppedAt = k;
         result = false;
+        z3::model assign = s.get_model();
+        generateTrace(assign);
         return false;
       }
     s.pop();
