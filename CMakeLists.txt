@@ -45,6 +45,7 @@ add_custom_command(TARGET verification-algorithms POST_BUILD
   $<TARGET_FILE_DIR:verification-algorithms>)
 
 if(WITH_TEST)
+  enable_testing()
   add_subdirectory(tests)
 endif(WITH_TEST)
 
