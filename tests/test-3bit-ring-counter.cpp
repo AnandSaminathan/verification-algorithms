@@ -2,6 +2,7 @@
 #include "verification-algorithms/ltl-bmc/ltl-bmc.hpp"
 #include "verification-algorithms/ic3/ic3.hpp"
 
+#include "catch.hpp"
 
 SCENARIO("three bit ring counter", "[3bit-ring-counter]") {
   Symbol a(bool_const, "a");

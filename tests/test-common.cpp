@@ -1,5 +1,6 @@
 #include "verification-algorithms/common/symbol.hpp"
 #include "verification-algorithms/k-induction/k-induction.hpp"
+#include "catch.hpp"
 
 TEST_CASE("symbol test", "[symbol]") {
 

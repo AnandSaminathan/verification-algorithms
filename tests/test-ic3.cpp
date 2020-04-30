@@ -1,5 +1,7 @@
 #include "verification-algorithms/ic3/ic3.hpp"
 
+#include "catch.hpp"
+
 TEST_CASE("example from https://ece.uwaterloo.ca/~vganesh/TEACHING/W2013/SATSMT/IC3.pdf", "[ic3]") {
 
   Symbol a(bool_const, "a");

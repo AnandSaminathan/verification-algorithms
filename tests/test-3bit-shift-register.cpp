@@ -2,6 +2,8 @@
 #include "verification-algorithms/ltl-bmc/ltl-bmc.hpp"
 #include "verification-algorithms/ic3/ic3.hpp"
 
+#include "catch.hpp"
+
 SCENARIO("three bit shift register", "[3bit-shift-register]") {
   std::vector<Symbol> symbols;
 

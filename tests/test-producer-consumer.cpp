@@ -2,6 +2,9 @@
 #include "verification-algorithms/ltl-bmc/ltl-bmc.hpp"
 #include "verification-algorithms/ic3/ic3.hpp"
 
+#include "catch.hpp"
+
+
 SCENARIO("producer consumer with propositional logic", "[producer-consumer]") {
 
   std::vector<Symbol> symbols;

@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 3.16)
-
 add_library(catch2_main STATIC catch-main.cpp)
 target_include_directories(catch2_main PUBLIC ${PROJECT_SOURCE_DIR}/tests/catch2) 
 
@@ -22,7 +20,7 @@ add_executable(${TARGET_NAME}
               ${TEST_SOURCE_LIST}
               ${SOURCE}
               )
-target_precompile_headers(${TARGET_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/tests/catch2/catch.hpp)
+target_include_directories(${TARGET_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/tests/catch2)
 target_link_libraries(${TARGET_NAME} catch2_main)
 target_link_libraries(${TARGET_NAME} -lz3)
 target_link_libraries(${TARGET_NAME} ${PROJECT_SOURCE_DIR}/libs/formula-tree/libantlr4-runtime.so)
