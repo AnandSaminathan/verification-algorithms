@@ -7,6 +7,9 @@ set(TEST_LIST
     3bit-ring-counter
     3bit-shift-register
     mutex
+    producer-consumer
+    ic3
+    common
    )
 
 foreach(NAME IN LISTS TEST_LIST)
