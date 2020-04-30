@@ -1,7 +1,10 @@
-#include <iostream>
+#include "verification-algorithms/k-induction/k-induction.hpp"
 #include "verification-algorithms/ltl-bmc/ltl-bmc.hpp"
+#include "verification-algorithms/ic3/ic3.hpp"
 
-int main() {
+#include "catch.hpp"
+
+SCENARIO("three bit shift register", "[3bit-shift-register]") {
   std::vector<Symbol> symbols;
 
   for(int i = 0; i <= 2; ++i) {
@@ -12,21 +15,66 @@ int main() {
   std::string I = "(x0 == false && x1 == false && x2 == false)";
   std::string T = "(next_x0 == x1 && next_x1 == x2 && next_x2 == true)";
 
-  ltlBmc l(symbols, I, T);
+  GIVEN("safety properties") {
+    kInduction k(symbols, I, T);
+    IC3 i(symbols, I, T);
+    std::string P;
 
-  l.setBound(3);
+    WHEN("property is allFalse") {
+      P = "!x0 && !x1 && !x2";
+      THEN("property does not hold"){
+        REQUIRE(k.check(P) == false);
+        REQUIRE(i.check(P) == false);
+      }
+    }
+  }
 
-  std::string alwaysZero = "G(x0 == false && x1 == false && x2 == false)";
-  std::string eventuallyAllTrue = "F(x0 == true && x1 == true && x2 == true)";
-  std::string correctNextStep = "X(x0 == false && x1 == false && x2 == true)";
-  std::string wrongNextStep = "X!(x0 == false && x1 == false && x2 == true)";
-  std::string untilAllTrue = "!(x0 && x1 && x2) U (x0 && x1 && x2)";
-  std::string releaseAllTrue = "(x0 && x1 && x2) R !(x0 && x1 && x2)";
+  GIVEN("ltl properties") {
+    ltlBmc l(symbols, I, T);
+    l.setBound(3);
+    std::string P;
+    
+    WHEN("property is always allFalse") {
+      P = "G(x0 == false && x1 == false && x2 == false)";
+      THEN("property does not hold") {
+        REQUIRE(l.check(P) == false);
+      }
+    }
 
-  assert(l.check(alwaysZero) == false);
-  assert(l.check(eventuallyAllTrue) == true);
-  assert(l.check(correctNextStep) == true);
-  assert(l.check(wrongNextStep) == false);
-  assert(l.check(untilAllTrue) == true);
-  assert(l.check(releaseAllTrue) == true);
+    WHEN("property is eventuallyAllTrue") {
+      P = "F(x0 == true && x1 == true && x2 == true)";
+      THEN("property holds") {
+        REQUIRE(l.check(P) == true);
+      }
+    }
+
+    WHEN("property is correctNextStep") {
+      P = "X(x0 == false && x1 == false && x2 == true)";
+      THEN("property holds") {
+        REQUIRE(l.check(P) == true);
+      }
+    }
+
+    WHEN("property is wrongNextStep") {
+      P = "X!(x0 == false && x1 == false && x2 == true)";
+      THEN("property does not hold") {
+        REQUIRE(l.check(P) == false);
+      }
+    }
+
+    WHEN("property is untilAllTrueAtleastOneFalse") {
+      P = "!(x0 && x1 && x2) U (x0 && x1 && x2)";
+      THEN("property holds") {
+        REQUIRE(l.check(P) == true);
+      }
+    }
+
+    WHEN("property is releaseAtleastOneFalseAllTrue") {
+      P = "(x0 && x1 && x2) R !(x0 && x1 && x2)";
+      THEN("property holds") {
+        REQUIRE(l.check(P) == true);
+      }
+    }
+  }
+
 }
