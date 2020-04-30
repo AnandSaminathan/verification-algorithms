@@ -27,3 +27,8 @@ target_link_libraries(${TARGET_NAME} catch2_main)
 target_link_libraries(${TARGET_NAME} -lz3)
 target_link_libraries(${TARGET_NAME} ${PROJECT_SOURCE_DIR}/libs/formula-tree/libantlr4-runtime.so)
 target_link_libraries(${TARGET_NAME} ${PROJECT_SOURCE_DIR}/libs/formula-tree/libformula-tree.so)
+
+add_test(NAME ${TARGET_NAME}
+         COMMAND ${TARGET_NAME} 
+        )
+
