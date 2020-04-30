@@ -1,5 +1,3 @@
-#include "catch2/catch.hpp"
-
 #include "verification-algorithms/k-induction/k-induction.hpp"
 #include "verification-algorithms/ltl-bmc/ltl-bmc.hpp"
 #include "verification-algorithms/ic3/ic3.hpp"
@@ -78,42 +76,42 @@ SCENARIO("three bit ring counter", "[3bit-ring-counter]") {
     l.setBound(3);
     std::string P;
 
-    WHEN("property is oneHigh") {
+    WHEN("property is always oneHigh") {
       P = "G((a == true && b == false && c == false) || (a == false && b == true && c == false) || (a == false && b == false && c == true))";
       THEN("property holds") {
         REQUIRE(l.check(P) == true);
       } 
     }
 
-    WHEN("property is allLow") {
+    WHEN("property is always allLow") {
       P = "G(a == false && b == false && c == false)";
       THEN("property does not hold") {
         REQUIRE(l.check(P) == false);
       }
     }
 
-    WHEN("property is allHigh") {
+    WHEN("property is always allHigh") {
       P = "G(a == true && b == true && c == true)";
       THEN("property does not hold") {
         REQUIRE(l.check(P) == false);
       }
     }
       
-    WHEN("property is firstHigh and othersLow") {
+    WHEN("property is always firstHigh and othersLow") {
       P = "G(a == true && b == false && c == false)";
       THEN("property does not hold") {
         REQUIRE(l.check(P) == false);
       }
     }
 
-    WHEN("property is firstHigh or secondHigh and othersLow")  {
+    WHEN("property is always firstHigh or secondHigh and othersLow")  {
       P = "G((a == true && b == false && c == false) || (a == false && b == true && c == false))";
       THEN("property does not hold") {
         REQUIRE(l.check(P) == false);
       }
     }
 
-    WHEN("property is atleastOneHigh") {
+    WHEN("property is always atleastOneHigh") {
       P = "G(a == true || b == true || c == true)";
       THEN("property holds") {
         REQUIRE(l.check(P) == true);

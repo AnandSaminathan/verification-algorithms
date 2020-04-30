@@ -5,6 +5,8 @@ target_include_directories(catch2_main PUBLIC ${PROJECT_SOURCE_DIR}/tests/catch2
 
 set(TEST_LIST 
     3bit-ring-counter
+    3bit-shift-register
+    mutex
    )
 
 foreach(NAME IN LISTS TEST_LIST)
@@ -14,7 +16,7 @@ endforeach()
 set(TARGET_NAME tests)
 
 add_executable(${TARGET_NAME}
-              test-3bit-ring-counter.cpp
+              ${TEST_SOURCE_LIST}
               ${SOURCE}
               )
 target_precompile_headers(${TARGET_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/tests/catch2/catch.hpp)
