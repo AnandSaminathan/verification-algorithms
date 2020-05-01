@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include "types.hpp"
 
 class Symbol {
@@ -18,3 +19,6 @@ class Symbol {
     type symbolType;
     std::string name, value;
 };
+
+extern std::vector<std::string> getSymbolNames(std::vector<Symbol>); 
+

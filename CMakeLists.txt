@@ -18,6 +18,7 @@ file(GLOB SOURCE ${PROJECT_SOURCE_DIR}/src/*.cpp
 add_library(verification-algorithms SHARED
             ${PROJECT_SOURCE_DIR}/src/verification-algorithms/common/cnf.cpp
             ${PROJECT_SOURCE_DIR}/src/verification-algorithms/common/z3-solver.cpp
+            ${PROJECT_SOURCE_DIR}/src/verification-algorithms/common/symbol.cpp
             ${PROJECT_SOURCE_DIR}/src/verification-algorithms/k-induction/k-induction.cpp
 	          ${PROJECT_SOURCE_DIR}/src/verification-algorithms/ltl-bmc/ltl-bmc.cpp
             ${PROJECT_SOURCE_DIR}/src/verification-algorithms/ic3/ic3.cpp

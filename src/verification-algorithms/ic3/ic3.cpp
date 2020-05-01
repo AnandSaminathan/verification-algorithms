@@ -122,6 +122,7 @@ bool IC3::check(std::string property) {
         result = false;
         stoppedAt = frames.size();
         trace.reverseTrace();
+        trace.setSymbols(getSymbolNames(symbols));
         return false;
       }
     }  

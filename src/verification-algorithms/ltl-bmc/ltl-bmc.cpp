@@ -226,6 +226,7 @@ bool ltlBmc::check(std::string property) {
         result = false;
         z3::model assign = s.get_model();
         generateTrace(assign);
+        trace.setSymbols(getSymbolNames(symbols)); 
         return false;
       }
     s.pop();

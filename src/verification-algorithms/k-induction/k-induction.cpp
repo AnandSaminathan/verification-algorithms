@@ -63,6 +63,7 @@ void kInduction::generateTrace(z3::model& assign) {
   }
 }
 
+
 bool kInduction::check(std::string property) {
   P = stringToZ3(property);
   trace = Trace();
@@ -118,6 +119,7 @@ bool kInduction::check(std::string property) {
       result = false;
       z3::model assign = s.get_model();
       generateTrace(assign);
+      trace.setSymbols(getSymbolNames(symbols));
       return false;  
     }
 
