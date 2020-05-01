@@ -5,6 +5,8 @@ project(verification-algorithms)
 set(CMAKE_CXX_STANDARD 11)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/include/z3)
+
 
 file(GLOB SOURCE ${PROJECT_SOURCE_DIR}/src/*.cpp
         ${PROJECT_SOURCE_DIR}/src/verification-algorithms/common/*.cpp
