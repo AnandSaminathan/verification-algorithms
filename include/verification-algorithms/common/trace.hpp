@@ -15,6 +15,8 @@ class Trace {
     inline std::vector<std::vector<std::string>> getStates() { return states;  }
     inline void reverseTrace() { std::reverse(states.begin(), states.end());  }
 
+    inline std::vector<std::string> getSymbols() { return symbols;  } 
+
   private:
     
     int varsPerState;
