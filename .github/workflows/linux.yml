@@ -1,0 +1,21 @@
+name: Linux CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: configure
+      run: mkdir build && cd build && cmake -DWITH_TEST=ON ..
+    - name: build
+      run: cmake --build build
+    - name: test
+      run: cd build && ctest
