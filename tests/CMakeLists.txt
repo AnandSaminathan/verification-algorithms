@@ -22,7 +22,7 @@ add_executable(${TARGET_NAME}
               )
 target_include_directories(${TARGET_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/tests/catch2)
 target_link_libraries(${TARGET_NAME} catch2_main)
-target_link_libraries(${TARGET_NAME} -lz3)
+target_link_libraries(${TARGET_NAME} ${PROJECT_SOURCE_DIR}/libs/z3/libz3.so)
 target_link_libraries(${TARGET_NAME} ${PROJECT_SOURCE_DIR}/libs/formula-tree/libantlr4-runtime.so)
 target_link_libraries(${TARGET_NAME} ${PROJECT_SOURCE_DIR}/libs/formula-tree/libformula-tree.so)
 
