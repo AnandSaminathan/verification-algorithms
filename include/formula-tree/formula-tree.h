@@ -30,8 +30,8 @@ class FormulaNode {
     inline formulaType getSubTreeType() { return subTreeType;  }
 
     inline int getChildrenCount() { return childrenCount; }
-    inline FormulaNode getChild(int child) { assertChild(child); return (*children[child]); }
-    inline std::shared_ptr<FormulaNode> getPointerToChild(int child) { assertChild(child); return (children[child]); }
+    FormulaNode getChild(int); 
+    std::shared_ptr<FormulaNode> getPointerToChild(int); 
     
     inline void setType(std::string type) { contentType = type; }
     inline void setSubTreeType(formulaType type) { subTreeType = type;  }
