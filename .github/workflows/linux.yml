@@ -23,7 +23,7 @@ jobs:
       run: sudo apt-get install uuid-dev
     - name: install antlr4
       run: sudo apt-get install antlr4
-    - name: Install Z3
+    - name: Install z3 using script
       uses: |
             cd ~
             chmod +x z3-setup.sh
