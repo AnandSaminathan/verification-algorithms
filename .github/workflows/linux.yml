@@ -23,11 +23,11 @@ jobs:
       run: sudo apt-get install uuid-dev
     - name: install antlr4
       run: sudo apt-get install antlr4
-    - name: set path
-      run: export LD_LIBRARY_PATH=`pwd`/libs/formula-tree
     - name: configure
       run: mkdir build && cd build && cmake -DWITH_TEST=ON ..
     - name: build
       run: cmake --build build
     - name: test
       run: cd build && ./tests/tests
+      env:
+        LD_LIBRARY_PATH: .
