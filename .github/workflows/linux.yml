@@ -24,7 +24,10 @@ jobs:
     - name: install antlr4
       run: sudo apt-get install antlr4
     - name: Install Z3
-      uses: bash z3-setup.sh
+      uses: |
+            cd ~
+            chmod +x z3-setup.sh
+            ./z3-setup.sh
     - name: configure
       run: mkdir build && cd build && cmake -DWITH_TEST=ON ..
     - name: build
