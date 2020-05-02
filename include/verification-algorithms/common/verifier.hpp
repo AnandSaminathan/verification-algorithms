@@ -8,6 +8,18 @@ class Verifier {
   public:
 
     virtual bool check(std::string) = 0;
-    virtual int getLength() = 0;
-    virtual Trace getTrace() = 0;
+    virtual inline int getLength(){
+      return stoppedAt;    
+    };
+    virtual inline Trace getTrace(){
+      if(result) throw std::logic_error("No Trace. Last result was SAT");
+      return trace;
+    };
+
+  protected:
+
+    Trace trace;
+
+    bool result;
+    int stoppedAt;
 };
