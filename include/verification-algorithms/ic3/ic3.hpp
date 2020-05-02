@@ -25,9 +25,6 @@ class IC3 : public Verifier {
     inline z3::expr getT() { return T; }
     inline z3::expr getP() { return P; }
 
-    inline int getLength() override { return stoppedAt; }
-    inline Trace getTrace() override { assert(result == false); return trace;  }
-
   private:
 
     void declare();
@@ -39,10 +36,6 @@ class IC3 : public Verifier {
     z3::expr_vector x;
     z3::expr_vector next_x;
 
-    Trace trace;
-
-    int stoppedAt;
-    bool result;
     std::vector<Symbol> symbols;
     std::vector<CNF> frames;
 };

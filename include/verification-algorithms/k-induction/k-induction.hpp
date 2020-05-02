@@ -28,9 +28,6 @@ class kInduction : public Verifier {
     inline z3::expr getT() { return T; }
     inline z3::expr getP() { return P; }
 
-    inline int  getLength() override { return stoppedAt; }
-    inline Trace getTrace() override { assert(result == false); return trace; }
-
     inline void setBound(int bound) { this->bound = bound;  }
     inline int getBound() { return bound; }
 
@@ -51,12 +48,8 @@ class kInduction : public Verifier {
     z3::expr P;
     z3::expr_vector x, next_x;
 
-    Trace trace;
-
-    int stoppedAt;
     int varsPerState;
     int bound{INT_MAX};
-    bool result;
     std::vector<Symbol> symbols;
     std::vector<z3::expr_vector> globalStates;
 

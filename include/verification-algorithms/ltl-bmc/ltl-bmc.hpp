@@ -27,9 +27,6 @@ class ltlBmc : public Verifier {
     inline z3::expr getI() { return I; }
     inline z3::expr getT() { return T; }
 
-    inline int  getLength() override { return stoppedAt; }
-    inline Trace getTrace() override { assert(result == false); return trace; }
-
     inline void setBound(int bound) { this->bound = bound;  }
     inline int getBound() { return bound; }
 
@@ -61,13 +58,9 @@ class ltlBmc : public Verifier {
     z3::expr I, T;
     z3::expr_vector x, next_x;
 
-    Trace trace;
-
     std::vector<Symbol> symbols;
 
     int varsPerState;
-    int stoppedAt;
     int bound;
-    bool result;
     std::vector<z3::expr_vector> globalStates;
 };
