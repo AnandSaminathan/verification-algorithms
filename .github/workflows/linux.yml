@@ -28,6 +28,8 @@ jobs:
       with:
               version: 4.8.7
               architecture: x64
+    - name: Current Dir
+      run: pwd
     - name: Copy Directories
       run: mkdir include/z3 && cp z3-4.8.7-x64-ubuntu-16.04/include/* include/z3
     - name: configure
