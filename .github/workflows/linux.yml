@@ -29,9 +29,9 @@ jobs:
               version: 4.8.7
               architecture: x64
     - name: Current Dir
-      run: pwd
+      run: pwd && ls
     - name: Copy Directories
-      run: mkdir include/z3 && cp z3-4.8.7-x64-ubuntu-16.04/include/* include/z3
+      run: mkdir include/z3 && cp /z3-4.8.7-x64-ubuntu-16.04/include/* include/z3
     - name: configure
       run: mkdir build && cd build && cmake -DWITH_TEST=ON ..
     - name: build
