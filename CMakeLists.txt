@@ -25,7 +25,7 @@ add_library(verification-algorithms SHARED
           )
 target_link_libraries(verification-algorithms ${PROJECT_SOURCE_DIR}/libs/formula-tree/libformula-tree.so)
 target_link_libraries(verification-algorithms ${PROJECT_SOURCE_DIR}/libs/formula-tree/libantlr4-runtime.so)
-target_link_libraries(verification-algorithms z3)
+target_link_libraries(verification-algorithms ${PROJECT_SOURCE_DIR}/libs/z3/libz3.so)
 
 add_custom_command(TARGET verification-algorithms POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_if_different

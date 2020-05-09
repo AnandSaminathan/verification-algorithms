@@ -25,6 +25,11 @@ jobs:
       run: sudo apt-get install antlr4
     - name: Install Z3
       uses: pavpanchekha/setup-z3@v1.2
+      with:
+              version: 4.8.7
+              architecture: x64
+    - name: Copy Directories
+      run: mkdir include/z3 && cp z3-4.8.7-x64-ubuntu-16.04/include/* include/z3
     - name: configure
       run: mkdir build && cd build && cmake -DWITH_TEST=ON ..
     - name: build
