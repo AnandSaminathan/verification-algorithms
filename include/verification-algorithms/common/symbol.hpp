@@ -14,6 +14,10 @@ class Symbol {
     inline std::string getName() { return name;  }
     inline std::string getValue() { return value; }
 
+    inline std::string setName(std::string name) { (this->name) = name; }
+    inline void setValue(std::string value) { (this->value) = value;  }
+    inline void setType(type symbolType) { (this->symbolType) = symbolType;  }
+
   private:
   
     type symbolType;
