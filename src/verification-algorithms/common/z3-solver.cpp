@@ -53,7 +53,121 @@ z3::expr pbeq(z3::expr_vector& forms, std::vector<int>& coeff, int rhs) {
   return z3::pbeq(forms, cc, rhs);
 }
 
+formulaType typeResolution(std::shared_ptr<FormulaNode> cur) {
+  if(cur->isVal()) {
+    std::string curType = cur->getContentType();
+    return (curType == "bool") ? pl : arith;
+  }
+
+  if(cur->isLeaf()) {
+    auto curType = symbolTable[cur->getContent()].getType();
+    auto ret = (curType == int_const) ? arith : pl;
+    cur->setSubTreeType(ret);
+    return ret;
+  }
+
+  std::string content = cur->getContent();
+
+  if(content == "()") {
+    auto formType = typeResolution(cur->getPointerToChild(0));
+    cur->setSubTreeType(formType);
+    return formType;
+  }
+  
+  if(content == "+" || content == "-") {
+    auto leftType = typeResolution(cur->getPointerToChild(0));
+    auto rightType = typeResolution(cur->getPointerToChild(1));
+    formulaType ret;
+    if(leftType == pl || leftType == pb) {
+      assert(rightType == pl || rightType == pb);
+      ret = pb;
+    } else {
+      assert(rightType == arith);
+      ret = arith;
+    }
+    cur->setSubTreeType(ret);
+    return ret;
+  }
+  
+  if(content == "*") {
+    auto leftType = typeResolution(cur->getPointerToChild(0));
+    auto rightType = typeResolution(cur->getPointerToChild(1));
+    formulaType ret;
+    assert(leftType == arith);
+    if(rightType == pl || rightType == pb) {
+      ret = pb; 
+    } else {
+      ret = arith;
+    }
+    cur->setSubTreeType(ret);
+    return ret;
+  }
+
+  if(content == "/" || content == "%") { 
+    auto leftType = typeResolution(cur->getPointerToChild(0));
+    auto rightType = typeResolution(cur->getPointerToChild(1));
+    assert(leftType == arith && rightType == arith);
+    cur->setSubTreeType(arith);
+    return arith;
+  }
+
+  if(content == "&&" || content == "||" || content == "->") {
+    auto leftType = typeResolution(cur->getPointerToChild(0));
+    auto rightType = typeResolution(cur->getPointerToChild(1));
+    assert(leftType == pb || leftType == pl);
+    assert(rightType == pb || rightType == pl);
+    cur->setSubTreeType(pl);
+    return pl;
+  }
+
+  if(content == "!") {
+    auto formType = typeResolution(cur->getPointerToChild(0));
+    assert(formType == pb || formType == pl);
+    cur->setSubTreeType(pl);
+    return pl;
+  }
+
+  if(content == "==" || content == "!=") {
+    auto leftType = typeResolution(cur->getPointerToChild(0));
+    auto rightType = typeResolution(cur->getPointerToChild(1));
+    formulaType ret;
+    if(leftType == pb) {
+      assert(rightType == arith);
+      ret = pb;
+    } else if(leftType == pl){
+      assert(rightType == pl);
+      ret = pl;
+    } else if(leftType == arith) {
+      assert(rightType == arith);
+      ret = pl;
+    }
+    cur->setSubTreeType(ret);
+    return ret;
+  }
+
+  if(content == ">=" || content == "<=" || content == "<" || content == ">") {
+    auto leftType = typeResolution(cur->getPointerToChild(0));
+    auto rightType = typeResolution(cur->getPointerToChild(1));
+    formulaType ret;
+    assert(rightType == arith);
+    if(leftType == pb || leftType == pl) {
+      ret = pb; 
+    } else {
+      ret = pl;
+    }
+    cur->setSubTreeType(ret);
+    return ret;
+  }
+
+}
+
 z3::expr construct(FormulaNode cur) {
+
+  if(cur.getSubTreeType() == pb) {
+    z3::expr_vector vec(ctx);
+    std::vector<int> coeff;
+    return constructPb(cur, vec, coeff, false);
+  }
 
   if(cur.isVal()) {
     return getZ3Val(cur.getContentType(), cur.getContent());
@@ -122,11 +236,7 @@ z3::expr constructPb(FormulaNode cur, z3::expr_vector& forms, std::vector<int>& 
 z3::expr stringToZ3(std::string stringExpr) {
   FormulaTree tree(stringExpr);
   FormulaNode root = tree.getRoot();
-  if(root.getSubTreeType() == pb) {
-    z3::expr_vector vec(ctx);
-    std::vector<int> coeff;
-    return constructPb(root, vec, coeff);
-  } else {
-    return construct(root);
-  }
+  typeResolution(tree.getPointerToRoot());
+  return construct(root);
 }
+

@@ -9,6 +9,7 @@
 extern z3::context ctx;
 extern std::map<std::string, Symbol> symbolTable;
 
+extern formulaType typeResolution(std::shared_ptr<FormulaNode>);
 extern z3::expr construct(FormulaNode);
 extern z3::expr constructPb(FormulaNode, z3::expr_vector&, std::vector<int>&, bool);
 extern z3::expr stringToZ3(std::string);
