@@ -210,6 +210,8 @@ z3::expr construct(FormulaNode cur) {
 
 z3::expr constructPb(FormulaNode cur, z3::expr_vector& forms, std::vector<int>& coeff, bool neg = false) {
   std::string content = cur.getContent();
+  if(content == "()") { return constructPb(cur.getChild(0), forms, coeff, neg); }
+
   if(content == "*") {
     forms.push_back(construct(cur.getChild(1)));
     int c = std::stoi((cur.getChild(0)).getContent());
@@ -219,7 +221,7 @@ z3::expr constructPb(FormulaNode cur, z3::expr_vector& forms, std::vector<int>& 
 
   FormulaNode child0 = cur.getChild(0);
   std::string childContent = child0.getContent();
-  if(childContent == "+" || childContent == "-" || childContent == "*") { constructPb(child0, forms, coeff); }
+  if(child0.getSubTreeType() == pb) { constructPb(child0, forms, coeff); }
   else { coeff.emplace_back(1); forms.push_back(construct(child0));  }
 
   if(content == "<=") { return pble(forms, coeff, std::stoi(cur.getChild(1).getContent())); }
@@ -227,6 +229,7 @@ z3::expr constructPb(FormulaNode cur, z3::expr_vector& forms, std::vector<int>& 
   if(content == "==") { return pbeq(forms, coeff, std::stoi(cur.getChild(1).getContent())); }
 
   FormulaNode child1 = cur.getChild(1);
+  while(child1.getContent() == "()") { child1 = child1.getChild(0); }
   if(child1.getContent() == "*") { constructPb(child1, forms, coeff, (content == "-")); }
   else if(content == "+") { coeff.emplace_back(1); forms.push_back(construct(child1)); } 
   else if(content == "-") { coeff.emplace_back(-1); forms.push_back(construct(child1)); }
