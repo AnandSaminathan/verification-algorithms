@@ -82,6 +82,14 @@ z3::expr ltlBmc::translationWithoutLoop(FormulaNode root, int i, int k) {
     return result;    
   }
 
+  if(content == "==") {
+    return translationWithoutLoop(root.getChild(0), i, k) == translationWithoutLoop(root.getChild(1), i, k);
+  }
+
+  if(content == "!=") {
+    return translationWithoutLoop(root.getChild(0), i, k) != translationWithoutLoop(root.getChild(1), i, k); 
+  }
+
   z3::expr result = construct(root);
   result = result.substitute(x, globalStates[i]);
 
@@ -174,6 +182,14 @@ z3::expr ltlBmc::translationWithLoop(FormulaNode root, int i, int k, int l) {
     }
 
     return result;
+  }
+
+  if(content == "==") {
+    return translationWithLoop(root.getChild(0), i, k, l) == translationWithLoop(root.getChild(1), i, k, l);
+  }
+
+  if(content == "!=") {
+    return translationWithLoop(root.getChild(0), i, k, l) != translationWithLoop(root.getChild(1), i, k, l); 
   }
 
   z3::expr result = construct(root);

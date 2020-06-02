@@ -71,6 +71,13 @@ SCENARIO("three bit shift register", "[3bit-shift-register]") {
 
     WHEN("property is releaseAtleastOneFalseAllTrue") {
       P = "(x0 && x1 && x2) R !(x0 && x1 && x2)";
+      THEN("property does not hold") {
+        REQUIRE(l.check(P) == false);
+      }
+    }
+
+    WHEN("property is releaseX2TrueX1false") {
+      P = "(x2 R !x1)";
       THEN("property holds") {
         REQUIRE(l.check(P) == true);
       }
