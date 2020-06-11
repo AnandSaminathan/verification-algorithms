@@ -43,7 +43,7 @@ class matrix {
       mat[x][y] = val.simplify();
     }
 
-    matrix operator+(matrix& other) {
+    matrix operator+(matrix other) {
       assert(dimensions == other.getDimensions()); 
       matrix result(dimensions.first, dimensions.second);
       for(int i = 0; i < dimensions.first; ++i) {
@@ -54,7 +54,7 @@ class matrix {
       return result;
     }
 
-    matrix operator-(matrix& other) {
+    matrix operator-(matrix other) {
       assert(dimensions == other.getDimensions()); 
       matrix result(dimensions.first, dimensions.second);
       for(int i = 0; i < dimensions.first; ++i) {
@@ -65,7 +65,7 @@ class matrix {
       return result;
     }
 
-    matrix operator*(matrix& other) {
+    matrix operator*(matrix other) {
       auto other_dimensions = other.getDimensions();
       assert(dimensions.second == other_dimensions.first);
       matrix result(dimensions.first, other_dimensions.second);
@@ -79,6 +79,33 @@ class matrix {
       }
       return result;
     }
+
+    z3::expr operator==(matrix other) {
+      assert(dimensions == other.getDimensions());
+      z3::expr result(ctx);
+      for(int i = 0; i < dimensions.first; ++i) {
+        for(int j = 0; j < dimensions.second; ++j) {
+          if(i == 0 && j == 0) { result = get(i, j) == other.get(i, j);  } else {
+            result = result && (get(i, j) == other.get(i, j));
+          }       
+        }
+      }
+      return result;
+    }
+
+    z3::expr operator!=(matrix other) {
+      assert(dimensions == other.getDimensions());
+      z3::expr result(ctx);
+      for(int i = 0; i < dimensions.first; ++i) {
+        for(int j = 0; j < dimensions.second; ++j) {
+          if(i == 0 && j == 0) { result = get(i, j) != other.get(i, j);  } else {
+            result = result && (get(i, j) != other.get(i, j));
+          }       
+        }
+      }
+      return result;
+    }
+
 
     void transpose() {
       matrix res(dimensions.second, dimensions.first);

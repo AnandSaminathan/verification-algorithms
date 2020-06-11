@@ -13,6 +13,7 @@ file(GLOB SOURCE ${PROJECT_SOURCE_DIR}/src/*.cpp
         ${PROJECT_SOURCE_DIR}/src/verification-algorithms/k-induction/*.cpp
 	      ${PROJECT_SOURCE_DIR}/src/verification-algorithms/ltl-bmc/*.cpp
         ${PROJECT_SOURCE_DIR}/src/verification-algorithms/ic3/*.cpp
+        ${PROJECT_SOURCE_DIR}/src/verification-algorithms/pnet-coverability/*.cpp
     )
 
 add_library(verification-algorithms SHARED
@@ -22,6 +23,7 @@ add_library(verification-algorithms SHARED
             ${PROJECT_SOURCE_DIR}/src/verification-algorithms/k-induction/k-induction.cpp
 	          ${PROJECT_SOURCE_DIR}/src/verification-algorithms/ltl-bmc/ltl-bmc.cpp
             ${PROJECT_SOURCE_DIR}/src/verification-algorithms/ic3/ic3.cpp
+            ${PROJECT_SOURCE_DIR}/src/verification-algorithms/pnet-coverability/pnet-coverability.cpp
           )
 target_link_libraries(verification-algorithms ${PROJECT_SOURCE_DIR}/libs/formula-tree/libformula-tree.so)
 target_link_libraries(verification-algorithms ${PROJECT_SOURCE_DIR}/libs/formula-tree/libantlr4-runtime.so)

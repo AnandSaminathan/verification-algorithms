@@ -1,6 +1,7 @@
 #include "verification-algorithms/k-induction/k-induction.hpp"
 #include "verification-algorithms/ltl-bmc/ltl-bmc.hpp"
 #include "verification-algorithms/ic3/ic3.hpp"
+#include "verification-algorithms/pnet-coverability/pnet-coverability.hpp"
 
 #include "catch.hpp"
 
@@ -290,5 +291,69 @@ SCENARIO("mutual exclusion with pseudo-boolean formula", "[mutex]") {
       }
     }
   } 
+}
+
+SCENARIO("mutual exclusion using smt", "[mutex-smt]") {
+  std::vector<Symbol> symbols;
+  for(int i = 1; i <= 5; ++i) {
+    char ic = (i + '0');
+    std::string var = "p";
+    var += ic;
+    Symbol pi(int_const, var);
+    symbols.push_back(pi);
+  }
+
+  std::vector<std::string> I({"1", "0", "1", "1", "0"});
+  std::vector<std::vector<std::string>> T({{"-1", "1", "0", "0"}, 
+                                           {"1", "-1", "0", "0"}, 
+                                           {"-1", "1", "-1", "1"}, 
+                                           {"0", "0", "-1", "1"}, 
+                                           {"0", "0", "1", "-1"}});
+  GIVEN("safety properties") {
+    PnetCoverability p(symbols, I, T);
+    std::string P;
+
+    WHEN("property is mutual exclusion") {
+      P = "(!(p2 > 0 && p5 > 0))";
+      THEN("property holds") {
+        REQUIRE(p.check(P) == true);
+      }
+    }
+
+    WHEN("property is bad mutual exclusion") {
+      P = "(p2 > 0 && p5 > 0)";
+      THEN("property does not hold") {
+        REQUIRE(p.check(P) == false);
+      }
+    } 
+
+    WHEN("property is always in critical section") {
+      P = "(p2 > 0 || p5 > 0)";
+      THEN("property does not hold") {
+        REQUIRE(p.check(P) == false);
+      }
+    }
+
+    WHEN("property is tokenUsed") {
+      P = "((p3 > 0) -> (p2 == 0 && p5 == 0))";
+      THEN("property holds") {
+        REQUIRE(p.check(P) == true);
+      }
+    }
+
+    WHEN("property is tokenUnused") {
+      P = "((p3 > 0) -> (p2 == 0 && p5 == 0))";
+      THEN("property holds") {
+        REQUIRE(p.check(P) == true);
+      }
+    }
+
+    WHEN("property is badTokenUsed") {
+      P = "((p3 == 0) -> (p2 == 1 && p5 == 1))";
+      THEN("property does not hold") {
+        REQUIRE(p.check(P) == false);
+      }
+    }
+  }
 }
 
