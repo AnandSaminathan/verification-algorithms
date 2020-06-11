@@ -1,6 +1,7 @@
 #include "verification-algorithms/k-induction/k-induction.hpp"
 #include "verification-algorithms/ltl-bmc/ltl-bmc.hpp"
 #include "verification-algorithms/ic3/ic3.hpp"
+#include "verification-algorithms/pnet-coverability/pnet-coverability.hpp"
 
 #include "catch.hpp"
 
@@ -158,3 +159,71 @@ SCENARIO("producer consumer with pseudo-boolean formula", "[producer-consumer]")
     }
   } 
 }
+
+SCENARIO("producer consumer with smt", "[producer-consumer-smt]") {
+  std::vector<Symbol> symbols;
+  for(int i = 1; i <= 6; ++i) {
+    char ic = (i + '0');
+    std::string var = "p";
+    var += ic;
+    Symbol pi(int_const, var);
+    symbols.push_back(pi);
+  }
+
+  std::vector<std::string> I({"1", "0", "1", "0", "0", "1"});
+  std::vector<std::vector<std::string>> T({{"-1", "1", "0", "0"},
+                                           {"1", "-1", "0", "0"}, 
+                                           {"0", "0", "-1", "1"},
+                                           {"0", "0", "1", "-1"},
+                                           {"0", "1", "-1", "0"},
+                                           {"0", "-1", "1", "0"}});
+
+  GIVEN("safety properties") {
+    PnetCoverability p(symbols, I, T);
+    std::string P;
+
+    WHEN("property is all non-negative") {
+      P = "(p1 >= 0 && p2 >= 0 && p3 >= 0 && p4 >= 0 && p5 >= 0 && p6 >= 0)";
+      THEN("property holds") {
+        REQUIRE(p.check(P) == true);
+      }
+    }
+
+    WHEN("property is at least one positive") {
+      P = "(p1 > 0 || p2 > 0 || p3 > 0 || p4 > 0 || p5 > 0 || p6 > 0)";
+      THEN("property holds") {
+        REQUIRE(p.check(P) == true);
+      }
+    }
+
+    WHEN("property is p1 negative") {
+      P = "(p1 < 0 && p2 >= 0 && p3 >= 0 && p4 >= 0 && p5 >= 0 && p6 >= 0)";
+
+      THEN("property does not hold") {
+        REQUIRE(p.check(P) == false);
+      }
+    }
+
+    WHEN("property is all positive") {
+      P = "(p1 > 0 && p2 > 0 && p3 > 0 && p4 > 0 && p5 > 0 && p6 > 0)";
+      THEN("property does not hold") {
+        REQUIRE(p.check(P) == false);
+      }
+    }
+
+    WHEN("property is alwaysI") {
+      P = "(p1 == 1 && p2 == 0 && p3 == 1 && p4 == 0 && p5 == 0 && p6 == 1)";
+      THEN("property does not hold") {
+        REQUIRE(p.check(P) == false);
+      }
+    }
+
+    WHEN("property is p1Positive") {
+      P = "(p1 > 0 && p2 >= 0 && p3 >= 0 && p4 >= 0 && p5 >= 0 && p6 >= 0)";
+      THEN("property does not hold") {
+        REQUIRE(p.check(P) == false);
+      }
+    }
+  } 
+}
+
