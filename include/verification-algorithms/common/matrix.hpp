@@ -40,7 +40,7 @@ class matrix {
     void set(int x, int y, z3::expr val) {
       assert(x >= 0 && x < dimensions.first);
       assert(y >= 0 && y < dimensions.second);
-      mat[x][y] = val;
+      mat[x][y] = val.simplify();
     }
 
     matrix operator+(matrix& other) {
@@ -78,6 +78,16 @@ class matrix {
         }
       }
       return result;
+    }
+
+    void transpose() {
+      matrix res(dimensions.second, dimensions.first);
+      for(int i = 0; i < dimensions.first; ++i) {
+        for(int j = 0; j < dimensions.second; ++j) {
+          res.set(j, i, get(i, j));
+        }
+      }
+      (*this) = res;
     }
 
   private:
