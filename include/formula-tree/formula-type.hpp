@@ -1,3 +1,6 @@
 #pragma once 
 
-enum formulaType { pl, ltl, pb, rel, arith };
+namespace ftree {
+ enum formulaType { pl, ltl, pb, rel, arith };
+}
+

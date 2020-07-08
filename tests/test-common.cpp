@@ -3,6 +3,8 @@
 #include "verification-algorithms/k-induction/k-induction.hpp"
 #include "catch.hpp"
 
+using namespace verifier;
+
 TEST_CASE("symbol test", "[symbol]") {
 
   SECTION("symbol is bool_const") {

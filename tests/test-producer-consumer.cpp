@@ -5,6 +5,7 @@
 
 #include "catch.hpp"
 
+using namespace verifier;
 
 SCENARIO("producer consumer with propositional logic", "[producer-consumer]") {
 

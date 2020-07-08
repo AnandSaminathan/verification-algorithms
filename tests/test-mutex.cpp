@@ -5,6 +5,8 @@
 
 #include "catch.hpp"
 
+using namespace verifier;
+
 SCENARIO("mutual exclusion with propositional logic", "[mutex]") {
   std::vector<Symbol> symbols;
   for(int i = 1; i <= 5; ++i) {
@@ -81,6 +83,20 @@ SCENARIO("mutual exclusion with propositional logic", "[mutex]") {
         REQUIRE(k.check(P) == false);
       }
     }
+
+    WHEN("property has undeclared variable") {
+      P = "(p1 == 0 || p10 == 0 || p6 == 0 || p51 == 0)";
+      THEN("throws exception") {
+        REQUIRE_THROWS_AS(k.check(P), std::invalid_argument);
+      }
+    }
+
+    WHEN("property has bad assignment") {
+      P = "(p1 == true)";
+      THEN("throws bad_cast")  {
+        REQUIRE_THROWS_AS(k.check(P), std::bad_cast);
+      }
+    }
   }
 
   GIVEN("ltl properties") {
@@ -147,6 +163,27 @@ SCENARIO("mutual exclusion with propositional logic", "[mutex]") {
         P = "F(p2 > 0 || p5 > 0)";
         THEN("property holds") {
           REQUIRE(l.check(P) == true);
+        }
+      }
+
+      WHEN("property has undeclared variable") {
+        P = "F(p12)";
+        THEN("throws invalid_argument") {
+          REQUIRE_THROWS_AS(l.check(P), std::invalid_argument);
+        }
+      }
+
+      WHEN("property has bad cast") {
+        P = "F(p1 == true)";
+        THEN("throws bad_cast") {
+          REQUIRE_THROWS_AS(l.check(P), std::bad_cast);
+        }
+      }
+
+      WHEN("property has bad cast 2") {
+        P = "F(p1)";
+        THEN("throws bad_cast") {
+          REQUIRE_THROWS_AS(l.check(P), std::bad_cast);
         }
       }
     }

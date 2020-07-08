@@ -4,6 +4,8 @@
 
 #include "catch.hpp"
 
+using namespace verifier;
+
 SCENARIO("three bit shift register", "[3bit-shift-register]") {
   std::vector<Symbol> symbols;
 
@@ -80,6 +82,13 @@ SCENARIO("three bit shift register", "[3bit-shift-register]") {
       P = "(x2 R !x1)";
       THEN("property holds") {
         REQUIRE(l.check(P) == true);
+      }
+    }
+
+    WHEN("property has undeclared variable") {
+      P = "G(x1 || dummy)";
+      THEN("throws exception") {
+        REQUIRE_THROWS_AS(l.check(P), std::invalid_argument);
       }
     }
   }

@@ -2,6 +2,8 @@
 
 #include "catch.hpp"
 
+using namespace verifier;
+
 TEST_CASE("example from https://ece.uwaterloo.ca/~vganesh/TEACHING/W2013/SATSMT/IC3.pdf", "[ic3]") {
 
   Symbol a(bool_const, "a");
@@ -27,6 +29,11 @@ TEST_CASE("example from https://ece.uwaterloo.ca/~vganesh/TEACHING/W2013/SATSMT/
   SECTION("property is at least one true") {
     P = "(a || b || c)";
     REQUIRE(i.check(P) == true);
+  }
+
+  SECTION("undeclared variable") {
+    P = "(a || d || c)";
+    REQUIRE_THROWS_AS(i.check(P), std::invalid_argument);
   }
 }
 

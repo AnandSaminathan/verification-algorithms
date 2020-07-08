@@ -4,6 +4,8 @@
 
 #include "catch.hpp"
 
+using namespace verifier;
+
 SCENARIO("three bit ring counter", "[3bit-ring-counter]") {
   Symbol a(bool_const, "a");
   Symbol b(bool_const, "b");
