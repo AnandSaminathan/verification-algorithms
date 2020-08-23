@@ -1,7 +1,7 @@
 #include "verification-algorithms/common/symbol.hpp"
 #include "verification-algorithms/common/matrix.hpp"
 #include "verification-algorithms/k-induction/k-induction.hpp"
-#include "catch.hpp"
+#include "catch2/catch.hpp"
 
 using namespace verifier;
 
