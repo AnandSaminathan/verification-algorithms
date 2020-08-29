@@ -30,4 +30,4 @@ jobs:
     - name: test
       run: cd build && ./tests/tests
       env:
-        LD_LIBRARY_PATH: .
+        LD_LIBRARY_PATH: ./formulatree/src/git_formulatree/bin

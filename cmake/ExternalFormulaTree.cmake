@@ -15,5 +15,8 @@ ExternalProject_Add(
 ExternalProject_Get_Property(git_formulatree source_dir)
 
 add_library(formula-tree INTERFACE)
+message(${source_dir})
 target_include_directories(formula-tree INTERFACE ${source_dir}/include)
 target_link_libraries(formula-tree INTERFACE ${source_dir}/bin/libformula-tree.so)
+target_link_libraries(formula-tree INTERFACE ${source_dir}/bin/libantlr4-runtime.so)
+target_link_libraries(formula-tree INTERFACE ${source_dir}/bin/libantlr4-runtime.so.4.8)
