@@ -1,6 +1,6 @@
 #include "verification-algorithms/ic3/ic3.hpp"
 
-#include "catch.hpp"
+#include "catch2/catch.hpp"
 
 using namespace verifier;
 

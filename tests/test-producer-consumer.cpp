@@ -3,7 +3,7 @@
 #include "verification-algorithms/ic3/ic3.hpp"
 #include "verification-algorithms/pnet-coverability/pnet-coverability.hpp"
 
-#include "catch.hpp"
+#include "catch2/catch.hpp"
 
 using namespace verifier;
 
