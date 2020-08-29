@@ -13,11 +13,13 @@ ExternalProject_Add(
         LOG_DOWNLOAD ON
 )
 ExternalProject_Get_Property(git_formulatree source_dir)
+set(FORMULATREE_INCLUDE ${source_dir}/include)
+set(FORMULATREE_LIBRARY ${source_dir}/bin)
 
 add_library(formula-tree STATIC ${PROJECT_SOURCE_DIR}/cmake/formulatree-main.cpp)
 
 add_dependencies(formula-tree git_formulatree)
-target_include_directories(formula-tree PUBLIC ${source_dir}/include)
-target_link_libraries(formula-tree ${source_dir}/bin/libformula-tree.so)
-target_link_libraries(formula-tree ${source_dir}/bin/libantlr4-runtime.so)
-target_link_libraries(formula-tree ${source_dir}/bin/libantlr4-runtime.so.4.8)
+target_include_directories(formula-tree PUBLIC ${FORMULATREE_INCLUDE})
+target_link_libraries(formula-tree ${FORMULATREE_LIBRARY}/libformula-tree.so)
+target_link_libraries(formula-tree ${FORMULATREE_LIBRARY}/libantlr4-runtime.so)
+target_link_libraries(formula-tree ${FORMULATREE_LIBRARY}/libantlr4-runtime.so.4.8)

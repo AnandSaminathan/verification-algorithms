@@ -13,9 +13,11 @@ ExternalProject_Add(
         LOG_DOWNLOAD ON
 )
 ExternalProject_Get_Property(git_z3 source_dir)
+set(Z3_INCLUDE ${source_dir}/include)
+set(Z3_LIBRARY ${source_dir}/bin)
 
 add_library(z3_main STATIC ${PROJECT_SOURCE_DIR}/cmake/z3-main.cpp)
 
 add_dependencies(z3_main git_z3)
-target_include_directories(z3_main PUBLIC ${source_dir}/include)
-target_link_libraries(z3_main ${source_dir}/bin/libz3.so)
+target_include_directories(z3_main PUBLIC ${Z3_INCLUDE})
+target_link_libraries(z3_main ${Z3_LIBRARY}/libz3.so)

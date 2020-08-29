@@ -29,3 +29,40 @@ if(WITH_TEST)
   add_subdirectory(tests)
 endif(WITH_TEST)
 
+set(POST_BUILD_INCLUDE_DIRECTORY $<TARGET_FILE_DIR:verification-algorithms>/include)
+set(POST_BUILD_BIN_DIRECTORY $<TARGET_FILE_DIR:verification-algorithms>/bin)
+
+add_custom_command(TARGET verification-algorithms POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+  "${FORMULATREE_INCLUDE}"
+  ${POST_BUILD_INCLUDE_DIRECTORY})
+
+add_custom_command(TARGET verification-algorithms POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+  "${Z3_INCLUDE}"
+  ${POST_BUILD_INCLUDE_DIRECTORY}/z3)
+
+add_custom_command(TARGET verification-algorithms POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+  "${PROJECT_SOURCE_DIR}/include"
+  ${POST_BUILD_INCLUDE_DIRECTORY}/)
+
+add_custom_command(TARGET verification-algorithms POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+  "${FORMULATREE_LIBRARY}"
+  ${POST_BUILD_BIN_DIRECTORY})
+
+add_custom_command(TARGET verification-algorithms POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_if_different
+  "${Z3_LIBRARY}/libz3.so"
+  ${POST_BUILD_BIN_DIRECTORY})
+
+add_custom_command(TARGET verification-algorithms POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy
+  $<TARGET_FILE:verification-algorithms>
+  ${POST_BUILD_BIN_DIRECTORY})
+
+add_custom_command(TARGET verification-algorithms POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E tar "cfv" "verificationalgo-source.zip" --format=zip
+  ${POST_BUILD_INCLUDE_DIRECTORY}
+  ${POST_BUILD_BIN_DIRECTORY})
